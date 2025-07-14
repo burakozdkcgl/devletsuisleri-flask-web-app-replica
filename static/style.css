@@ -1,0 +1,150 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #fff;
+    color: #000;
+}
+
+/* HEADER */
+header {
+    background-color: #004d40;
+    color: white;
+    padding: 12px 0;
+    text-align: center;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+/* NAVBAR */
+nav {
+    background-color: #00695c;
+    text-align: center;
+    padding: 10px 0;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    margin: 0 15px;
+    font-weight: bold;
+    font-size: 14px;
+    transition: color 0.2s ease;
+}
+
+nav a:hover {
+    color: #cfd8dc;
+}
+
+/* LAYOUT */
+.mainWrapper {
+    display: flex;
+    padding: 20px;
+    gap: 20px;
+    max-width: 1400px;
+    margin: auto;
+}
+
+.mainContent {
+    flex: 3;
+    padding-left: 30px;
+    padding-right: 30px;
+}
+
+.sideColumn {
+    flex: 1.2;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding-right: 3px;
+    padding-left: 30px;
+}
+
+/* SLIDER PLACEHOLDER */
+.sliderPlaceholder {
+    background-color: black;
+    height: 300px;
+    border-radius: 6px;
+    margin-bottom: 10px;
+}
+
+/* BOXES */
+.indexBox1,
+.indexBox2,
+.indexBox3 {
+    background-color: #f5f5f5;
+    padding: 15px;
+    border-radius: 8px;
+}
+
+/* BUTTONS IN BOX2 */
+.indexBox2 button {
+    width: 100%;
+    padding: 8px;
+    margin: 5px 0;
+    border: none;
+    background-color: #e0e0e0;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.indexBox2 button:hover {
+    background-color: #ccc;
+}
+
+/* BOTTOM BIG BUTTONS */
+.buttonRow {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+    padding: 0 30px;
+    gap: 20px;
+}
+
+.indexBtn1,
+.indexBtn2,
+.indexBtn3 {
+    flex: 1;
+    padding: 18px;
+    font-size: 18px;
+    font-weight: bold;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    cursor: pointer;
+    transition: filter 0.3s ease;
+}
+
+.indexBtn1 { background-color: #1976d2; }
+.indexBtn2 { background-color: #4caf50; }
+.indexBtn3 { background-color: #ef6c00; }
+
+.indexBtn1:hover,
+.indexBtn2:hover,
+.indexBtn3:hover {
+    filter: brightness(1.1);
+}
+
+.indexBtn1 i,
+.indexBtn2 i,
+.indexBtn3 i {
+    font-size: 20px;
+}
+
+/* FOOTER */
+footer {
+    background-color: #004d40;
+    color: white;
+    padding: 12px;
+    text-align: center;
+    margin-top: 30px;
+    font-size: 14px;
+}
