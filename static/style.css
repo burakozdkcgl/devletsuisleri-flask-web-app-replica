@@ -7,7 +7,7 @@ body {
 
 /* HEADER */
 header {
-    background-color: #004d40;
+    background-color: #227a4d;
     color: white;
     padding: 12px 0;
     text-align: center;
@@ -17,7 +17,7 @@ header {
 
 /* NAVBAR */
 nav {
-    background-color: #00695c;
+    background-color: #1a4430;
     text-align: center;
     padding: 10px 0;
 }
@@ -141,10 +141,17 @@ nav a:hover {
 
 /* FOOTER */
 footer {
-    background-color: #004d40;
+    background-color: #227a4d;
     color: white;
     padding: 12px;
     text-align: center;
     margin-top: 30px;
     font-size: 14px;
+}
+
+.sidebarLogo {
+    width: 100%;
+    height: auto;
+    border-radius: 6px;
+    margin-bottom: 10px;
 }
