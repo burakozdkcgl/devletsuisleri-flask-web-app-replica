@@ -46,7 +46,7 @@ nav a:hover {
 
 .mainContent {
     flex: 3;
-    padding-left: 80px;
+    padding-left: 120px;
     padding-right: 30px;
 }
 
@@ -55,7 +55,7 @@ nav a:hover {
     display: flex;
     flex-direction: column;
     gap: 20px;
-    padding-right: 80px;
+    padding-right: 120px;
     padding-left: 30px;
 }
 
