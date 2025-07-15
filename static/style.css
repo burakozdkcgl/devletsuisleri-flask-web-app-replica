@@ -46,7 +46,7 @@ nav a:hover {
 
 .mainContent {
     flex: 3;
-    padding-left: 120px;
+    padding-left: 80px;
     padding-right: 30px;
 }
 
@@ -55,7 +55,7 @@ nav a:hover {
     display: flex;
     flex-direction: column;
     gap: 20px;
-    padding-right: 120px;
+    padding-right: 80px;
     padding-left: 30px;
 }
 
@@ -154,4 +154,59 @@ footer {
     height: auto;
     border-radius: 6px;
     margin-bottom: 10px;
+}
+
+
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+footer {
+    text-align: center;
+    padding: 10px;
+    background-color: #1a3d2f;
+    color: white;
+}
+
+.wrapper {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.mainWrapper {
+    flex: 1;
+    display: flex;
+    padding: 20px;
+    gap: 20px;
+    max-width: 1400px;
+    margin: auto;
+}
+
+html {
+    scrollbar-gutter: stable;
+}
+
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+}
+
+.mainWrapper {
+    flex: 1;
+}
+
+footer {
+    text-align: center;
+    padding: 10px;
+    background-color: #1a3d2f;
+    color: white;
 }
