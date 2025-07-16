@@ -1,6 +1,6 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
-from config import SQLALCHEMY_DATABASE_URI, SECRET_KEY
+from logic.config import SQLALCHEMY_DATABASE_URI, SECRET_KEY
 
 from logic.db import db
 
