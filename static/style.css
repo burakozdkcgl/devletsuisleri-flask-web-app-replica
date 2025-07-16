@@ -1,8 +1,25 @@
-body {
+/* Temel */
+* {
+    box-sizing: border-box;
+}
+
+html, body {
+    height: 100%;
     margin: 0;
+    padding: 0;
     font-family: Arial, sans-serif;
     background-color: #fff;
     color: #000;
+    display: flex;
+    flex-direction: column;
+    scrollbar-gutter: stable;
+}
+
+/* Sayfa sarıcı */
+.wrapper {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
 /* HEADER */
@@ -35,8 +52,9 @@ nav a:hover {
     color: #cfd8dc;
 }
 
-/* LAYOUT */
+/* Ana içerik */
 .mainWrapper {
+    flex: 1;
     display: flex;
     padding: 20px;
     gap: 20px;
@@ -44,12 +62,14 @@ nav a:hover {
     margin: auto;
 }
 
+/* Sol içerik */
 .mainContent {
     flex: 3;
     padding-left: 80px;
     padding-right: 30px;
 }
 
+/* Sağ kolon */
 .sideColumn {
     flex: 1.2;
     display: flex;
@@ -59,7 +79,7 @@ nav a:hover {
     padding-left: 30px;
 }
 
-/* SLIDER PLACEHOLDER */
+/* SLIDER */
 .sliderPlaceholder {
     background-color: black;
     height: 300px;
@@ -67,7 +87,7 @@ nav a:hover {
     margin-bottom: 10px;
 }
 
-/* BOXES */
+/* KUTULAR */
 .indexBox1,
 .indexBox2,
 .indexBox3 {
@@ -76,7 +96,7 @@ nav a:hover {
     border-radius: 8px;
 }
 
-/* BUTTONS IN BOX2 */
+/* KUTU2 BUTONLAR */
 .indexBox2 button {
     width: 100%;
     padding: 8px;
@@ -93,7 +113,7 @@ nav a:hover {
     background-color: #ccc;
 }
 
-/* BOTTOM BIG BUTTONS */
+/* ALT BUTONLAR */
 .buttonRow {
     display: flex;
     justify-content: space-between;
@@ -141,60 +161,18 @@ nav a:hover {
 
 /* FOOTER */
 footer {
-    background-color: #1a4430;
-    color: white;
-    padding: 12px;
     text-align: center;
-    margin-top: 30px;
+    padding: 12px;
+    background-color: #1a3d2f;
+    color: white;
     font-size: 14px;
+    margin-top: auto;
 }
 
+/* LOGO */
 .sidebarLogo {
     width: 100%;
     height: auto;
     border-radius: 6px;
     margin-bottom: 10px;
-}
-
-
-html, body {
-    height: 100%;
-    margin: 0;
-    padding: 0;
-}
-
-footer {
-    text-align: center;
-    padding: 10px;
-    background-color: #1a3d2f;
-    color: white;
-}
-
-.wrapper {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-}
-
-.mainWrapper {
-    flex: 1;
-    display: flex;
-    padding: 20px;
-    gap: 20px;
-    max-width: 1400px;
-    margin: auto;
-}
-
-html {
-    scrollbar-gutter: stable;
-}
-
-
-body {
-    display: flex;
-    flex-direction: column;
-}
-
-.mainWrapper {
-    flex: 1;
 }
