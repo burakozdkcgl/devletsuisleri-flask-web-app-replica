@@ -54,7 +54,10 @@ nav a:hover {
 .mainWrapper {
     flex-grow: 1;
     display: flex;
-    padding: 20px;
+    padding-top: 20px;
+    padding-right: 120px;
+    padding-bottom: 20px;
+    padding-left: 120px;
     gap: 20px;
     max-width: 1400px;
     margin: auto;
@@ -65,7 +68,7 @@ nav a:hover {
 /* Sol içerik */
 .mainContent {
     flex: 3;
-    padding-left: 80px;
+    padding-left: 30px;
     padding-right: 30px;
 }
 
@@ -75,7 +78,7 @@ nav a:hover {
     display: flex;
     flex-direction: column;
     gap: 20px;
-    padding-right: 80px;
+    padding-right: 30px;
     padding-left: 30px;
 }
 
