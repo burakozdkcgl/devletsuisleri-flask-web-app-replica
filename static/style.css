@@ -189,11 +189,6 @@ html {
     scrollbar-gutter: stable;
 }
 
-html, body {
-    height: 100%;
-    margin: 0;
-    padding: 0;
-}
 
 body {
     display: flex;
@@ -202,11 +197,4 @@ body {
 
 .mainWrapper {
     flex: 1;
-}
-
-footer {
-    text-align: center;
-    padding: 10px;
-    background-color: #1a3d2f;
-    color: white;
 }
