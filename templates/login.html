@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>Giriş Yap - DSI</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+        }
+
+        .mainWrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-grow: 1;
+            padding: 40px 20px;
+        }
+
+        .loginBox {
+            background-color: #f5f5f5;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            max-width: 400px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .inputGroup {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background-color: white;
+            padding: 8px 12px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+        }
+
+        .inputGroup i {
+            color: #888;
+        }
+
+        .inputGroup input {
+            border: none;
+            outline: none;
+            flex: 1;
+            font-size: 15px;
+        }
+
+        .loginBox button {
+            background-color: #ddd;
+            color: #000;
+            padding: 10px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .loginBox button:hover {
+            background-color: #bbb;
+        }
+
+        .flashMsg {
+            background-color: #ffdddd;
+            color: #b00020;
+            padding: 10px;
+            border-left: 5px solid #b00020;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        .wrapper {
+            display: flex;
+            flex-direction: column;
+            min-height: 100%;
+        }
+    </style>
+</head>
+<body>
+<div class="wrapper">
+
+    <header>
+        Eskişehir <br> DSİ 3. Bölge Müdürlüğü
+    </header>
+
+    <nav>
+        <a href="/">Ana sayfa</a>
+        <a href="/about">Hakkımızda</a>
+        <a href="/contact">İletişim</a>
+    </nav>
+
+    <div class="mainWrapper" style="justify-content: center; align-items: center;">
+    <div class="mainContent" style="display: flex; justify-content: center; align-items: center;">
+        <form method="POST" class="loginBox">
+            <div class="inputGroup">
+                <i class="fas fa-user"></i>
+                <input type="text" name="username" placeholder="Kullanıcı adı" required>
+            </div>
+
+            <div class="inputGroup">
+                <i class="fas fa-lock"></i>
+                <input type="password" name="password" placeholder="Şifre" required>
+            </div>
+
+            <button type="submit">Giriş Yap</button>
+
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    <div class="flashMsg">
+                        {% for msg in messages %}
+                            <div>{{ msg }}</div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endwith %}
+        </form>
+    </div>
+</div>
+
+
+    <footer>
+        &copy; 2025 T.C. Devlet Su İşleri Genel Müdürlüğü. Tüm hakları saklıdır.
+    </footer>
+</div>
+</body>
+</html>
