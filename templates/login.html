@@ -11,24 +11,36 @@
             margin: 0;
         }
 
+        .wrapper {
+            display: flex;
+            flex-direction: column;
+            min-height: 100%;
+        }
+
         .mainWrapper {
+            flex: 1;
             display: flex;
             justify-content: center;
             align-items: center;
-            flex-grow: 1;
-            padding: 40px 20px;
+            padding: 20px;
+            background-color: #fdfdfd;
         }
 
         .loginBox {
             background-color: #f5f5f5;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-            max-width: 400px;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+            max-width: 450px;
             width: 100%;
             display: flex;
             flex-direction: column;
-            gap: 15px;
+            font-size: 16px;
+        }
+
+        .spacerTop,
+        .spacerBottom {
+            height: 44px; /* flashMsg yüksekliği kadar sabit boşluk */
         }
 
         .inputGroup {
@@ -36,34 +48,39 @@
             align-items: center;
             gap: 10px;
             background-color: white;
-            padding: 8px 12px;
-            border-radius: 6px;
+            padding: 12px 16px;
+            border-radius: 8px;
             border: 1px solid #ccc;
+            margin-bottom: 20px;
         }
 
         .inputGroup i {
-            color: #888;
+            color: #666;
+            font-size: 18px;
         }
 
         .inputGroup input {
             border: none;
             outline: none;
             flex: 1;
-            font-size: 15px;
+            font-size: 16px;
+            background: transparent;
         }
 
         .loginBox button {
-            background-color: #ddd;
-            color: #000;
-            padding: 10px;
+            background-color: #4caf50;
+            color: white;
+            padding: 12px;
             border: none;
-            border-radius: 6px;
+            border-radius: 8px;
             cursor: pointer;
             font-weight: bold;
+            font-size: 16px;
+            transition: background-color 0.2s ease;
         }
 
         .loginBox button:hover {
-            background-color: #bbb;
+            background-color: #388e3c;
         }
 
         .flashMsg {
@@ -73,12 +90,7 @@
             border-left: 5px solid #b00020;
             border-radius: 6px;
             font-size: 14px;
-        }
-
-        .wrapper {
-            display: flex;
-            flex-direction: column;
-            min-height: 100%;
+            margin-top: 10px;
         }
     </style>
 </head>
@@ -95,34 +107,39 @@
         <a href="/contact">İletişim</a>
     </nav>
 
-    <div class="mainWrapper" style="justify-content: center; align-items: center;">
-    <div class="mainContent" style="display: flex; justify-content: center; align-items: center;">
-        <form method="POST" class="loginBox">
-            <div class="inputGroup">
-                <i class="fas fa-user"></i>
-                <input type="text" name="username" placeholder="Kullanıcı adı" required>
+    <div class="mainWrapper">
+        <div class="loginBox">
+
+            <div class="spacerTop"></div>
+
+            <form method="POST" style="display: flex; flex-direction: column;">
+                <div class="inputGroup">
+                    <i class="fas fa-user"></i>
+                    <input type="text" name="username" placeholder="Kullanıcı adı" required>
+                </div>
+
+                <div class="inputGroup">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" name="password" placeholder="Şifre" required>
+                </div>
+
+                <button type="submit">Giriş Yap</button>
+            </form>
+
+            <div class="spacerBottom">
+                {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                        <div class="flashMsg">
+                            {% for msg in messages %}
+                                <div>{{ msg }}</div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                {% endwith %}
             </div>
 
-            <div class="inputGroup">
-                <i class="fas fa-lock"></i>
-                <input type="password" name="password" placeholder="Şifre" required>
-            </div>
-
-            <button type="submit">Giriş Yap</button>
-
-            {% with messages = get_flashed_messages() %}
-                {% if messages %}
-                    <div class="flashMsg">
-                        {% for msg in messages %}
-                            <div>{{ msg }}</div>
-                        {% endfor %}
-                    </div>
-                {% endif %}
-            {% endwith %}
-        </form>
+        </div>
     </div>
-</div>
-
 
     <footer>
         &copy; 2025 T.C. Devlet Su İşleri Genel Müdürlüğü. Tüm hakları saklıdır.
