@@ -1,10 +1,15 @@
 from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
-from config import SQLALCHEMY_DATABASE_URI, SECRET_KEY, SQLALCHEMY_TRACK_MODIFICATIONS
-
-
+from config import SQLALCHEMY_DATABASE_URI, RESET_COOKIE_ON_EACH_LAUNCH, SQLALCHEMY_TRACK_MODIFICATIONS
+from logic.context import inject_user
 from logic.db import db, handle_schema
 
+import secrets
+
+if RESET_COOKIE_ON_EACH_LAUNCH:
+    SECRET_KEY = secrets.token_hex(32)
+else:
+    from config import SECRET_KEY as STATIC_SECRET_KEY
+    SECRET_KEY = STATIC_SECRET_KEY
 
 app = Flask(__name__,
             static_folder="static",
@@ -14,11 +19,10 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = SQLALCHEMY_TRACK_MODIFICATIONS
 app.config['SECRET_KEY'] = SECRET_KEY
 
 
+app.context_processor(inject_user)
 
 db.init_app(app)
 
-
-from logic.entity import User, Role, Branch, UserCredential
 
 from logic.main import main_bp
 app.register_blueprint(main_bp)

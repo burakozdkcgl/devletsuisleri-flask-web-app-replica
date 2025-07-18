@@ -1,77 +1,46 @@
-<!DOCTYPE html>
-<html lang="tr">
-<head>
-    <meta charset="UTF-8">
-    <title>DSI</title>
+<!-- templates/index.html -->
+{% extends "base.html" %}
 
-    <!-- Stil geç yüklenmesi sorununu önlemek için preload -->
-    <link rel="preload" href="{{ url_for('static', filename='style.css') }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <noscript><link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"></noscript>
+{% block title %}Ana Sayfa{% endblock %}
 
-    <!-- FontAwesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+{% block content %}
+<div class="mainContent">
+    <div class="sliderPlaceholder"></div>
+    <p>Sample text or headline here describing content.</p>
 
-</head>
-<body>
-<div class="wrapper">
-
-    <header>
-        Eskişehir <br> DSİ 3. Bölge Müdürlüğü
-    </header>
-
-    <nav>
-        <a href="/">Ana sayfa</a>
-        <a href="/about">Hakkımızda</a>
-        <a href="/contact">İletişim</a>
-    </nav>
-
-    <div class="mainWrapper">
-        <div class="mainContent">
-            <div class="sliderPlaceholder"></div>
-            <p>Sample text or headline here describing content.</p>
-
-            <div class="buttonRow">
-    <button class="indexBtn1" onclick="location.href='/directory'">
-        <i class="fas fa-address-book"></i> Rehber
-    </button>
-    <button class="indexBtn2" onclick="location.href='/login'">
-        <i class="fas fa-sign-in-alt"></i> Giriş
-    </button>
-    <button class="indexBtn3" onclick="location.href='/cafeteria'">
-        <i class="fas fa-utensils"></i> Yemekhane
-    </button>
+    <div class="buttonRow">
+        <button class="indexBtn1" onclick="location.href='/directory'">
+            <i class="fas fa-address-book"></i> Rehber
+        </button>
+        <button class="indexBtn2" onclick="location.href='/login'">
+            <i class="fas fa-sign-in-alt"></i> Giriş
+        </button>
+        <button class="indexBtn3" onclick="location.href='/cafeteria'">
+            <i class="fas fa-utensils"></i> Yemekhane
+        </button>
+    </div>
 </div>
-        </div>
 
-        <div class="sideColumn">
-            <div class="indexBox1">
-                <img class="sidebarLogo" src="{{ url_for('static', filename='images/sideColumn_logo.png') }}" loading="lazy" alt="Logo">
-
-            </div>
-
-            <div class="indexBox2">
-                <h4>Kısayollar</h4>
-                <button>Link A</button>
-                <button>Link B</button>
-                <button>Link C</button>
-                <button>Link D</button>
-            </div>
-
-            <div class="indexBox3">
-                <h4>Info</h4>
-                <ul>
-                    <li>Something happened</li>
-                    <li>Another event</li>
-                    <li>Update available</li>
-                </ul>
-            </div>
-        </div>
+<div class="sideColumn">
+    <div class="indexBox1">
+        <img class="sidebarLogo" src="{{ url_for('static', filename='images/sideColumn_logo.png') }}" loading="lazy" alt="Logo">
     </div>
 
-    <footer>
-        &copy; 2025 T.C. Devlet Su İşleri Genel Müdürlüğü. Tüm hakları saklıdır.
-    </footer>
+    <div class="indexBox2">
+        <h4>Kısayollar</h4>
+        <button>Link A</button>
+        <button>Link B</button>
+        <button>Link C</button>
+        <button>Link D</button>
+    </div>
 
+    <div class="indexBox3">
+        <h4>Info</h4>
+        <ul>
+            <li>Something happened</li>
+            <li>Another event</li>
+            <li>Update available</li>
+        </ul>
+    </div>
 </div>
-</body>
-</html>
+{% endblock %}

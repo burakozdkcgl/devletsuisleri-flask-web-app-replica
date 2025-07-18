@@ -18,7 +18,7 @@ def insert_mock_data(db):
     # Kullanıcılar
     users = []
     creds = []
-    for i in range(5):
+    for i in range(7):
         user = User(
             username=f"kullanici{i+1}",
             full_name=f"Kullanıcı {i+1}",

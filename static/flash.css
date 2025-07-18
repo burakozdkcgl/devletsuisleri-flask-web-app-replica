@@ -1,0 +1,65 @@
+.flashContainer {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.flashCard {
+    width: 360px;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+    animation: fadeInSlide 0.4s ease;
+    color: white;
+    font-family: sans-serif;
+}
+
+.flashContent {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 18px 20px;
+    font-size: 15px;
+    font-weight: 500;
+}
+
+.flashContent i {
+    font-size: 20px;
+    flex-shrink: 0;
+}
+
+.flashFooter {
+    height: 6px;
+    background-color: rgba(0,0,0,0.15);
+}
+
+.flashCard.success {
+    background: linear-gradient(135deg, #43a047 0%, #66bb6a 100%);
+}
+
+.flashCard.error {
+    background: linear-gradient(135deg, #e53935 0%, #ef5350 100%);
+}
+
+.flashCard.info {
+    background: linear-gradient(135deg, #1e88e5 0%, #42a5f5 100%);
+}
+
+.flashCard.warning {
+    background: linear-gradient(135deg, #f57c00 0%, #ffb74d 100%);
+}
+
+@keyframes fadeInSlide {
+    from {
+        opacity: 0;
+        transform: translateX(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
