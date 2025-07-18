@@ -42,11 +42,14 @@ class User(db.Model):
     # AD SOYAD
     full_name = db.Column(db.String(100), nullable=False)
 
+    # DAHILI TELEFON
+    internal_phone = db.Column(db.String(20), nullable=True)
+
     # Rol (zorunlu) → her kullanıcı bir role sahip olmalı
-    role_id = db.Column(db.Integer, db.ForeignKey("roles.id"), nullable=False)
+    role_id = db.Column(db.Integer, db.ForeignKey("roles.id", ondelete="CASCADE"), nullable=False)
 
     # Şube (isteğe bağlı) → bazı kullanıcıların şubesi olmayabilir
-    branch_id = db.Column(db.Integer, db.ForeignKey("branches.id"), nullable=True)
+    branch_id = db.Column(db.Integer, db.ForeignKey("branches.id", ondelete="SET NULL"), nullable=True)
 
     # One-to-one ilişki: Kullanıcının şifresi (UserCredential)
     credentials = db.relationship("UserCredential", backref="user", uselist=False)
@@ -62,7 +65,7 @@ class UserCredential(db.Model):
     id = db.Column(db.Integer, primary_key=True)
 
     # Hangi kullanıcıya ait olduğunu belirten foreign key
-    user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False, unique=True)
+    user_id = db.Column(db.Integer, db.ForeignKey("users.id", ondelete="CASCADE"), nullable=False, unique=True)
 
     # Şifrenin hashlenmiş hali
     password_hash = db.Column(db.String(255), nullable=False)
