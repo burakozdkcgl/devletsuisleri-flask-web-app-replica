@@ -8,8 +8,13 @@ auth_bp = Blueprint("auth", __name__)
 @auth_bp.route("/login", methods=["GET", "POST"])
 def login():
     if "user_id" in session:
-        flash("Zaten giriş yaptınız.", "warning")
-        return redirect(url_for("main.index"))
+        user = User.query.get(session["user_id"])
+        if user:
+            flash("Zaten giriş yaptınız.", "warning")
+            return redirect(url_for("main.index"))
+        else:
+            session.clear()  # Geçersiz session temizlenir
+
 
     if request.method == "POST":
         username = request.form.get("username")
