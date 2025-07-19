@@ -33,6 +33,14 @@
             <a href="/inventory" class="nav-item">
                 <i class="fas fa-boxes"></i> Envanter
             </a>
+            <a href="/issues" class="nav-item">
+                <i class="fas fa-tools"></i> Arıza Talepleri
+            </a>
+        {% endif %}
+        {% if user.full_name and user.role.name == "Admin" %}
+            <a href="/admin" class="nav-item">
+                <i class="fas fa-shield"></i> Admin Paneli
+            </a>
         {% endif %}
         <!-- Ortaya eklemek istediğin diğer düğmeler -->
     </div>
