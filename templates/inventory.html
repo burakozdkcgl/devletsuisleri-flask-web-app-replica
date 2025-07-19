@@ -1,8 +1,13 @@
 {% extends "base.html" %}
 {% block title %}Envanter{% endblock %}
 
+{% block head %}
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+{% endblock %}
+
 {% block content %}
 <style>
+/* mevcut stil kodların aynı */
 .account-container {
     display: flex;
     flex: 1;
@@ -20,8 +25,8 @@
 
 .sidebar-button {
     padding: 12px;
-    background-color: #555; /* daha koyu arka plan */
-    color: white;           /* okunabilirlik */
+    background-color: #555;
+    color: white;
     border: none;
     border-radius: 6px;
     font-weight: bold;
@@ -30,7 +35,6 @@
     font-size: 13px;
     transition: background 0.2s ease;
 }
-
 
 .sidebar-button.active {
     background-color: #444;
@@ -44,8 +48,8 @@
     border-radius: 12px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
     width: 100%;
-    min-width: 540px;
-    max-width: 900px;
+    min-width: 700px;
+    max-width: 700px;
 }
 
 .account-section.active {
@@ -125,22 +129,22 @@ button:hover {
         <!-- Sekme 1: Özet -->
         <div id="overview" class="account-section active">
             <h3>Envanter Özeti</h3>
-            <table>
+            <table id="summaryTable">
                 <thead>
                     <tr>
                         <th>Ürün</th>
-                        <th>Toplam</th>
                         <th>Zimmetli</th>
                         <th>Stokta</th>
+                        <th>Toplam</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for row in summary %}
                     <tr>
                         <td>{{ row.product.name }}</td>
-                        <td>{{ row.total }}</td>
                         <td>{{ row.assigned }}</td>
                         <td>{{ row.unassigned }}</td>
+                        <td>{{ row.total }}</td>
                     </tr>
                     {% endfor %}
                 </tbody>
@@ -150,7 +154,7 @@ button:hover {
         <!-- Sekme 2: Zimmetleme -->
         <div id="assignment" class="account-section">
             <h3>Zimmet Yönetimi</h3>
-            <table>
+            <table id="assignedTable">
                 <thead>
                     <tr>
                         <th>ID</th>
@@ -208,7 +212,7 @@ button:hover {
                     {% endfor %}
                 </select>
                 <input type="number" name="quantity" min="1" placeholder="Adet" required>
-                <button type="submit">Stoğa Ekle</button>
+                <button type="submit">Stok Ekle</button>
             </form>
         </div>
     </div>
@@ -222,5 +226,45 @@ function showTab(tabId, el) {
     document.querySelectorAll(".account-section").forEach(section => section.classList.remove("active"));
     document.getElementById(tabId).classList.add("active");
 }
+</script>
+{% endblock %}
+
+{% block scripts %}
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<script>
+  $(document).ready(function() {
+    $('#summaryTable').DataTable({
+      paging: true,
+      searching: false,
+      lengthChange: false,
+      pageLength: 5,
+      info: false,
+      ordering: false,
+      language: {
+        paginate: {
+          previous: "←",
+          next: "→"
+        },
+        emptyTable: "Tabloda veri yok"
+      }
+    });
+
+    $('#assignedTable').DataTable({
+      paging: true,
+      searching: false,
+      lengthChange: false,
+      pageLength: 5,
+      info: false,
+      ordering: false,
+      language: {
+        paginate: {
+          previous: "←",
+          next: "→"
+        },
+        emptyTable: "Zimmetli ürün yok"
+      }
+    });
+  });
 </script>
 {% endblock %}
