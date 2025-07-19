@@ -6,7 +6,7 @@ def insert_mock_data(db):
         return
 
     # Roller
-    roles = [Role(name=r) for r in ["Admin", "User", "Technician"]]
+    roles = [Role(name=r) for r in ["Admin", "Şube Müdürü", "Personel"]]
     db.session.add_all(roles)
     db.session.commit()
 
@@ -24,7 +24,8 @@ def insert_mock_data(db):
             full_name=f"Kullanıcı {i+1}",
             role_id=roles[i % len(roles)].id,
             branch_id=branches[i % len(branches)].id,
-            internal_phone=f"1234{i+1}"
+            internal_phone=f"1234{i+1}",
+            email=f"kullanici{i+1}@example.com"
         )
         users.append(user)
         db.session.add(user)

@@ -42,6 +42,9 @@ class User(db.Model):
     # AD SOYAD
     full_name = db.Column(db.String(100), nullable=False)
 
+    # E POSTA
+    email = db.Column(db.String(100), nullable=True)
+
     # DAHILI TELEFON
     internal_phone = db.Column(db.String(20), nullable=True)
 

@@ -14,3 +14,10 @@ def index():
 def cafeteria():
     flash("Bu sayfa henüz aktif değil.", "warning")
     return redirect(request.referrer or "/")
+
+@main_bp.route("/directory")
+def directory():
+    from logic.entity import User, Branch
+    users = User.query.all()
+    branches = Branch.query.order_by(Branch.name).all()
+    return render_template("directory.html", users=users, branches=branches)

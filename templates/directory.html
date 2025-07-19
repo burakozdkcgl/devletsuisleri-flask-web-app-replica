@@ -1,0 +1,162 @@
+{% extends "base.html" %}
+{% block title %}Directory{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+<style>
+    .directory-wrapper {
+        width: 100%;
+        padding: 40px 90px;
+        background-color: transparent;
+    }
+
+    .directory-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        margin-bottom: 25px;
+        gap: 15px;
+    }
+
+    .directory-title {
+        font-size: 32px;
+        font-weight: 700;
+        color: #1f2937;
+        margin: 0;
+    }
+
+    .directory-filter label {
+        font-size: 15px;
+        margin-right: 10px;
+        font-weight: 500;
+    }
+
+    .directory-filter select {
+        padding: 8px 12px;
+        font-size: 15px;
+        border: 1px solid #cbd5e1;
+        border-radius: 8px;
+        background-color: #fff;
+    }
+
+    #userTable {
+        width: 100%;
+        font-family: "Segoe UI", sans-serif;
+        font-size: 15px;
+        border-collapse: separate;
+        border-spacing: 0;
+    }
+
+    table.dataTable thead {
+        background-color: #e0e0e0;
+        color: #111827;
+    }
+
+    table.dataTable thead th {
+        padding: 12px;
+        font-weight: 600;
+    }
+
+    table.dataTable tbody td {
+        padding: 12px;
+    }
+
+    table.dataTable tbody tr:hover {
+        background-color: #f9fafb;
+    }
+
+    table.dataTable.no-footer {
+        border-bottom: 1px solid #e5e7eb;
+    }
+
+    .dataTables_wrapper .dataTables_filter input {
+        padding: 6px 10px;
+        border-radius: 6px;
+        border: 1px solid #d1d5db;
+        background-color: white;
+        font-size: 14px;
+    }
+
+    .dataTables_wrapper .dataTables_paginate {
+        margin-top: 10px;
+    }
+
+    /* responsive tweak */
+    @media (max-width: 768px) {
+        .directory-wrapper {
+            padding: 20px;
+        }
+
+        .directory-title {
+            font-size: 24px;
+        }
+
+        .directory-filter {
+            width: 100%;
+            justify-content: flex-start;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="directory-wrapper">
+    <div class="directory-header">
+        <h2 class="directory-title">Kullanıcı Rehberi</h2>
+        <div class="directory-filter">
+            <label for="branchFilter">Şube:</label>
+            <select id="branchFilter">
+                <option value="">Tümü</option>
+                {% for branch in branches %}
+                    <option value="{{ branch.name }}">{{ branch.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+    </div>
+
+    <table id="userTable" class="display">
+        <thead>
+            <tr>
+                <th>Ad Soyad</th>
+                <th>Kullanıcı Adı</th>
+                <th>Email</th>
+                <th>Dahili</th>
+                <th>Şube</th>
+                <th>Rol</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+            <tr>
+                <td>{{ user.full_name }}</td>
+                <td>{{ user.username }}</td>
+                <td>{{ user.email or "-" }}</td>
+                <td>{{ user.internal_phone or "-" }}</td>
+                <td>{{ user.branch.name if user.branch else "—" }}</td>
+                <td>{{ user.role.name }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<script>
+    $(document).ready(function () {
+        const table = $('#userTable').DataTable({
+            language: {
+                url: "https://cdn.datatables.net/plug-ins/1.13.6/i18n/tr.json"
+            }
+        });
+
+        $('#branchFilter').on('change', function () {
+            const val = $(this).val();
+            table.column(4).search(val).draw();  // Şube kolonu 4. sırada artık (0'dan başlıyor)
+        });
+    });
+</script>
+{% endblock %}
