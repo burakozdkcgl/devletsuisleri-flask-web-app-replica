@@ -104,3 +104,39 @@ def delete_user(user_id):
         db.session.commit()
         flash("Kullanıcı silindi.", "info")
     return redirect(url_for("admin.user_settings"))
+    
+
+@admin_bp.route("/users/new", methods=["GET", "POST"])
+@require_admin
+def create_user():
+    if request.method == "POST":
+        full_name = request.form["full_name"]
+        username = request.form["username"]
+        email = request.form.get("email")
+        internal_phone = request.form.get("internal_phone")
+        role_id = int(request.form["role_id"])
+        branch_id = request.form.get("branch_id") or None
+
+        if User.query.filter_by(username=username).first():
+            flash("Bu kullanıcı adı zaten mevcut.", "error")
+            return redirect(url_for("admin.create_user"))
+
+        new_user = User(
+            full_name=full_name,
+            username=username,
+            email=email,
+            internal_phone=internal_phone,
+            role_id=role_id,
+            branch_id=branch_id
+        )
+        db.session.add(new_user)
+        db.session.flush()  # user.id gelsin diye
+
+        # Şifre bilgisi NULL
+        db.session.commit()
+        flash("Kullanıcı başarıyla oluşturuldu.", "success")
+        return redirect(url_for("admin.user_settings"))
+
+    roles = Role.query.all()
+    branches = Branch.query.order_by(Branch.name).all()
+    return render_template("admin_new_user.html", roles=roles, branches=branches)

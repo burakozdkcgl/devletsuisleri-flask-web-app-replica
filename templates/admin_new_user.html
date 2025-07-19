@@ -1,0 +1,153 @@
+{% extends "base.html" %}
+{% block title %}Yeni Kullanıcı Ekle{% endblock %}
+
+{% block content %}
+<style>
+    .user-wrapper {
+        width: 100%;
+        padding: 30px 20px;
+        max-width: 600px;
+        margin: auto;
+    }
+
+    .user-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 25px;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .user-title {
+        font-size: 22px;
+        font-weight: 700;
+        margin: 0;
+    }
+
+    .btn-back {
+        background-color: #666;
+        color: white;
+        padding: 6px 12px;
+        font-size: 14px;
+        font-weight: bold;
+        text-decoration: none;
+        border-radius: 6px;
+    }
+
+    .user-form {
+        background-color: #f9f9f9;
+        padding: 24px;
+        border-radius: 10px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+    }
+
+    .form-group {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .form-group i {
+        font-size: 16px;
+        color: #555;
+        width: 22px;
+        text-align: center;
+    }
+
+    .form-group input,
+    .form-group select {
+        flex: 1;
+        padding: 8px 10px;
+        font-size: 14px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+    }
+
+    .user-form button {
+        align-self: flex-end;
+        background-color: #444;
+        color: white;
+        padding: 9px 18px;
+        font-weight: bold;
+        font-size: 14px;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+    }
+
+    .user-form button:hover {
+        background-color: #222;
+    }
+
+    .note {
+        margin-top: 12px;
+        font-size: 13px;
+        color: #444;
+        background-color: #f0f0f0;
+        padding: 10px 14px;
+        border-radius: 8px;
+        border-left: 4px solid #999;
+    }
+</style>
+
+<div class="user-wrapper">
+    <div class="user-header">
+        <a href="{{ url_for('admin.admin_index') }}" class="btn-back">
+            <i class="fas fa-arrow-left"></i> Geri Dön
+        </a>
+        <h2 class="user-title">Yeni Kullanıcı Ekle</h2>
+    </div>
+
+    <form method="POST" action="/admin/users/new" class="user-form">
+        <div class="form-group">
+            <i class="fas fa-user"></i>
+            <input type="text" name="full_name" placeholder="Ad Soyad" required>
+        </div>
+
+        <div class="form-group">
+            <i class="fas fa-user-tag"></i>
+            <input type="text" name="username" placeholder="Kullanıcı Adı" required>
+        </div>
+
+        <div class="form-group">
+            <i class="fas fa-envelope"></i>
+            <input type="email" name="email" placeholder="E-posta (İsteğe Bağlı)">
+        </div>
+
+        <div class="form-group">
+            <i class="fas fa-phone"></i>
+            <input type="text" name="internal_phone" placeholder="Dahili Telefon (İsteğe Bağlı)">
+        </div>
+
+        <div class="form-group">
+            <i class="fas fa-code-branch"></i>
+            <select name="branch_id">
+                <option value="">Şube Seçin (İsteğe Bağlı)</option>
+                {% for branch in branches %}
+                    <option value="{{ branch.id }}">{{ branch.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="form-group">
+            <i class="fas fa-user-shield"></i>
+            <select name="role_id" required>
+                <option value="">Rütbe Seçin</option>
+                {% for role in roles %}
+                    <option value="{{ role.id }}">{{ role.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <button type="submit"><i class="fas fa-plus-circle"></i> Oluştur</button>
+
+        <div class="note">
+            <i class="fas fa-info-circle"></i> Yeni oluşturulan kullanıcı <strong>şifresiz bir şekilde giriş yapabilir ve hesap sayfasından kendi şifrelerini belirleyebilirler.</strong>.
+        </div>
+    </form>
+</div>
+{% endblock %}

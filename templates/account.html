@@ -99,7 +99,10 @@ button:hover {
 <div class="account-container">
     <div class="account-sidebar">
         <button class="sidebar-button active" onclick="showTab('info', this)">Kişisel Bilgiler</button>
-        <button class="sidebar-button" onclick="showTab('password', this)">Şifre Değiştir</button>
+        <button class="sidebar-button" onclick="showTab('password', this)">
+    {% if user.credentials %}Şifre Değiştir{% else %}Şifre Oluştur{% endif %}
+</button>
+
     </div>
 
     <div>
@@ -125,10 +128,12 @@ button:hover {
         </div>
 
         <div id="password" class="account-section">
-            <h3>Şifre Değiştir</h3>
+            <h3>{% if user.credentials %}Şifre Değiştir{% else %}Şifre Oluştur{% endif %}</h3>
             <form method="POST" action="/account/change_password">
+                {% if user.credentials %}
                 <label>Mevcut Şifre</label>
                 <input type="password" name="current_password" required>
+                {% endif %}
                 <label>Yeni Şifre</label>
                 <input type="password" name="new_password" required>
                 <label>Yeni Şifre (Tekrar)</label>

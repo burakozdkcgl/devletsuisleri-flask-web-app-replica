@@ -51,7 +51,23 @@ def change_password():
     new_password = request.form.get("new_password", "")
     confirm_password = request.form.get("confirm_password", "")
 
-    if not user.credentials or not check_password_hash(user.credentials.password_hash, current_password):
+    # Şifre hiç oluşturulmamışsa → doğrudan ekle
+    if not user.credentials:
+        if new_password != confirm_password:
+            flash("Yeni şifreler uyuşmuyor.", "error")
+            return redirect(url_for("account.account"))
+
+        new_cred = UserCredential(
+            user_id=user.id,
+            password_hash=generate_password_hash(new_password)
+        )
+        db.session.add(new_cred)
+        db.session.commit()
+        flash("Şifreniz başarıyla oluşturuldu.", "success")
+        return redirect(url_for("account.account"))
+
+    # Mevcut şifreyi kontrol et
+    if not check_password_hash(user.credentials.password_hash, current_password):
         flash("Mevcut şifreniz yanlış.", "error")
         return redirect(url_for("account.account"))
 
