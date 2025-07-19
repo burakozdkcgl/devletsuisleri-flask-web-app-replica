@@ -30,25 +30,6 @@ header {
     font-weight: bold;
 }
 
-/* NAVBAR */
-nav {
-    background-color: #1a4430;
-    text-align: center;
-    padding: 7.5px 0;
-}
-
-nav a {
-    color: white;
-    text-decoration: none;
-    margin: 0 11.25px;
-    font-weight: bold;
-    font-size: 10.5px;
-    transition: color 0.2s ease;
-}
-
-nav a:hover {
-    color: #cfd8dc;
-}
 
 /* Ana içerik */
 .mainWrapper {
@@ -179,4 +160,61 @@ footer {
     height: auto;
     border-radius: 4.5px;
     margin-bottom: 7.5px;
+}
+
+
+
+
+
+
+.navbar {
+    background-color: #1a4430;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 30px;
+    position: relative;
+}
+
+.nav-side {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    justify-content: flex-end;
+}
+
+.nav-left {
+    justify-content: flex-start;
+}
+
+.nav-center {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    flex-wrap: wrap;
+}
+
+.nav-item {
+    color: white;
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: color 0.2s ease;
+}
+
+.nav-item:hover {
+    color: #cfd8dc;
+}
+
+.nav-user {
+    color: white;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
 }

@@ -23,7 +23,8 @@ def insert_mock_data(db):
             username=f"kullanici{i+1}",
             full_name=f"Kullanıcı {i+1}",
             role_id=roles[i % len(roles)].id,
-            branch_id=branches[i % len(branches)].id
+            branch_id=branches[i % len(branches)].id,
+            internal_phone=f"1234{i+1}"
         )
         users.append(user)
         db.session.add(user)

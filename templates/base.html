@@ -20,16 +20,47 @@
         Eskişehir <br> DSİ 3. Bölge Müdürlüğü
     </header>
 
-    <nav>
-        <a href="/">Ana sayfa</a>
+   
 
+<nav class="navbar">
+    <div class="nav-side nav-left"></div> <!-- boş, ortalamaya yardımcı -->
+
+    <div class="nav-center">
+        <a href="/" class="nav-item">
+            <i class="fas fa-home"></i> Ana sayfa
+        </a>
         {% if user.full_name %}
-            <span>{{ user.full_name }} ({{ user.role }})</span>
-            <a href="/logout">Çıkış Yap</a>
-        {% else %}
-            <a href="/login">Giriş Yap</a>
+            <a href="/inventory" class="nav-item">
+                <i class="fas fa-boxes"></i> Envanter
+            </a>
         {% endif %}
-    </nav>
+        <!-- Ortaya eklemek istediğin diğer düğmeler -->
+    </div>
+
+    <div class="nav-side nav-right">
+        {% if user.full_name %}
+            <span class="nav-user">
+                <i class="fas fa-user-circle"></i> {{ user.full_name + " (" + user.role.name + ")" }}
+            </span>
+            <a href="/logout" class="nav-item">
+                <i class="fas fa-sign-out-alt"></i> Çıkış Yap
+            </a>
+        {% else %}
+            <a href="/login" class="nav-item">
+                <i class="fas fa-sign-in-alt"></i> Giriş Yap
+            </a>
+        {% endif %}
+    </div>
+</nav>
+
+
+
+
+
+
+
+
+
 
     <div class="mainWrapper">
         {% block content %}{% endblock %}
