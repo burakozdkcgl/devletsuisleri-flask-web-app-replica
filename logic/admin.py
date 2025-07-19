@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, redirect, url_for, flash
+from flask import Blueprint, render_template, request, redirect, url_for, flash, session
 from logic.entity import Branch, User, Role
 from logic.db import db
 from logic.context import require_admin
@@ -97,13 +97,23 @@ def update_user(user_id):
 @require_admin
 def delete_user(user_id):
     user = User.query.get(user_id)
+
     if not user:
         flash("Kullanıcı bulunamadı.", "error")
     else:
         db.session.delete(user)
         db.session.commit()
+
+        # Eğer silinen kullanıcı oturumdaki kullanıcıysa çıkış yap
+        if session.get("user_id") == user_id:
+            session.clear()
+            flash("Kendi hesabınızı sildiniz. Oturum sonlandırıldı.", "info")
+            return redirect(url_for("auth.login"))
+
         flash("Kullanıcı silindi.", "info")
+
     return redirect(url_for("admin.user_settings"))
+
     
 
 @admin_bp.route("/users/new", methods=["GET", "POST"])
