@@ -70,3 +70,25 @@ def add_stock():
         flash(f"{quantity} adet ürün eklendi.", "success")
 
     return redirect(url_for("inventory.inventory_view"))
+
+@inventory_bp.route("/inventory/remove_stock", methods=["POST"])
+@require_login
+def remove_stock():
+    product_id = request.form.get("product_id")
+    quantity = int(request.form.get("quantity", 0))
+
+    if quantity <= 0:
+        flash("Geçerli bir miktar giriniz.", "error")
+        return redirect(url_for("inventory.inventory_view"))
+
+    unassigned_items = Inventory.query.filter_by(product_id=product_id, user_id=None).limit(quantity).all()
+
+    if len(unassigned_items) < quantity:
+        flash("Yeterli stok yok.", "error")
+    else:
+        for item in unassigned_items:
+            db.session.delete(item)
+        db.session.commit()
+        flash(f"{quantity} adet ürün stoktan çıkarıldı.", "success")
+
+    return redirect(url_for("inventory.inventory_view"))

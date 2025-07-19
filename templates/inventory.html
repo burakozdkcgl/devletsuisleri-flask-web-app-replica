@@ -121,8 +121,12 @@ button:hover {
             <i class="fas fa-exchange-alt"></i>  Zimmetler
         </button>
         <button class="sidebar-button" onclick="showTab('add', this)">
-            <i class="fas fa-plus-circle"></i>  Yeni Ürün Girişi
+            <i class="fas fa-plus-circle"></i>  Ürün Girişi
         </button>
+        <button class="sidebar-button" onclick="showTab('remove', this)">
+    <i class="fas fa-minus-circle"></i>  Ürün Çıkışı
+</button>
+
     </div>
 
     <div>
@@ -215,6 +219,25 @@ button:hover {
                 <button type="submit">Stok Ekle</button>
             </form>
         </div>
+
+
+        <!-- Sekme 4: Ürün çıkar -->
+<div id="remove" class="account-section">
+    <h3>Ürün Stoğundan Çıkar</h3>
+    <form method="POST" action="{{ url_for('inventory.remove_stock') }}" class="form-group">
+        <select name="product_id" required>
+            <option value="">Ürün Seçin</option>
+            {% for product in products %}
+            <option value="{{ product.id }}">{{ product.name }}</option>
+            {% endfor %}
+        </select>
+        <input type="number" name="quantity" min="1" placeholder="Adet" required>
+        <button type="submit">Stoktan Çıkar</button>
+    </form>
+</div>
+
+
+
     </div>
 </div>
 
