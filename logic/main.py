@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, session
+from flask import Blueprint, render_template, session, flash, redirect, request
 
 main_bp = Blueprint("main", __name__)
 
@@ -9,3 +9,8 @@ def index():
         "role": session.get("role"),
     }
     return render_template("index.html")
+
+@main_bp.route("/cafeteria", methods=["POST"])
+def cafeteria():
+    flash("Bu sayfa henüz aktif değil.", "warning")
+    return redirect(request.referrer or "/")

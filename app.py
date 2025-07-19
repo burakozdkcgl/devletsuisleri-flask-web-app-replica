@@ -3,6 +3,7 @@ from config import SQLALCHEMY_DATABASE_URI, RESET_COOKIE_ON_EACH_LAUNCH, SQLALCH
 from logic.context import inject_user
 from logic.db import db, handle_schema
 
+
 import secrets
 
 if RESET_COOKIE_ON_EACH_LAUNCH:
@@ -25,9 +26,8 @@ db.init_app(app)
 
 
 from logic.main import main_bp
-app.register_blueprint(main_bp)
-
 from logic.auth import auth_bp
+app.register_blueprint(main_bp)
 app.register_blueprint(auth_bp)
 
 
