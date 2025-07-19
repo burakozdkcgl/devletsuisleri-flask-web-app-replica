@@ -42,21 +42,20 @@
                 <i class="fas fa-shield"></i> Admin Paneli
             </a>
         {% endif %}
-        <!-- Ortaya eklemek istediğin diğer düğmeler -->
     </div>
 
     <div class="nav-side nav-right">
         {% if user.full_name %}
             <span class="nav-user">
-                <i class="fas fa-user-circle"></i> {{ user.full_name + " (" + user.role.name + ")" }}
+                <i class="fas fa-user"></i> {{ user.full_name + " (" + user.role.name + ")" }}
             </span>
             <a href="/logout" class="nav-item">
                 <i class="fas fa-sign-out-alt"></i> Çıkış Yap
             </a>
-        {% else %}
-            <a href="/login" class="nav-item">
-                <i class="fas fa-sign-in-alt"></i> Giriş Yap
-            </a>
+        {% elif request.path != '/login' %}
+        <a href="/login" class="nav-item">
+            <i class="fas fa-sign-in-alt"></i> Giriş Yap
+        </a>
         {% endif %}
     </div>
 </nav>

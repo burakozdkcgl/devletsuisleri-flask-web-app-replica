@@ -1,0 +1,149 @@
+{% extends "base.html" %}
+{% block title %}Kullanıcı Ayarları{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+<style>
+    .user-wrapper {
+        width: 100%;
+        padding: 40px 90px;
+    }
+
+    .user-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        margin-bottom: 25px;
+        gap: 15px;
+    }
+
+    .user-title {
+        font-size: 32px;
+        font-weight: 700;
+        margin: 0;
+    }
+
+    table.dataTable thead {
+        background-color: #e0e0e0;
+        color: #111827;
+    }
+
+    table.dataTable tbody td {
+        padding: 12px;
+    }
+
+    table select, table input {
+        width: 100%;
+        padding: 6px 10px;
+        font-size: 14px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+
+    .action-btn {
+        border: none;
+        border-radius: 6px;
+        padding: 6px 12px;
+        font-weight: bold;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .btn-update {
+        background-color: #007bff;
+        color: white;
+    }
+
+    .btn-delete {
+        background-color: #dc3545;
+        color: white;
+    }
+
+    .btn-back {
+        background-color: #6c757d;
+        color: white;
+        padding: 8px 14px;
+        font-weight: bold;
+        text-decoration: none;
+        border-radius: 6px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="user-wrapper">
+    <div class="user-header">
+        <a href="{{ url_for('admin.admin_index') }}" class="btn-back"><i class="fas fa-arrow-left"></i> Geri Dön</a>
+        <h2 class="user-title">Kullanıcı Ayarları</h2>
+    </div>
+
+    <table id="userTable" class="display">
+        <thead>
+            <tr>
+                <th>Ad Soyad</th>
+                <th>Rütbe</th>
+                <th>Şube</th>
+                <th style="width: 180px;">İşlemler</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+            <tr>
+                <form method="post" action="{{ url_for('admin.update_user', user_id=user.id) }}">
+                <td>{{ user.full_name }}</td>
+                <td>
+                    <select name="role_id">
+                        {% for role in roles %}
+                        <option value="{{ role.id }}" {% if user.role_id == role.id %}selected{% endif %}>{{ role.name }}</option>
+                        {% endfor %}
+                    </select>
+                </td>
+                <td>
+                    <select name="branch_id">
+                        <option value="">—</option>
+                        {% for branch in branches %}
+                        <option value="{{ branch.id }}" {% if user.branch_id == branch.id %}selected{% endif %}>{{ branch.name }}</option>
+                        {% endfor %}
+                    </select>
+                </td>
+                <td>
+                    <button class="action-btn btn-update" type="submit">
+                        <i class="fas fa-save"></i> Kaydet
+                    </button>
+                </form>
+                <form method="post" action="{{ url_for('admin.delete_user', user_id=user.id) }}"
+                      style="display:inline-block"
+                      onsubmit="return confirm('Bu kullanıcıyı silmek istediğinize emin misiniz?')">
+                    <button class="action-btn btn-delete" type="submit">
+                        <i class="fas fa-trash"></i> Sil
+                    </button>
+                </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#userTable').DataTable({
+            language: {
+                url: "https://cdn.datatables.net/plug-ins/1.13.6/i18n/tr.json"
+            },
+            pageLength: 5,
+            lengthMenu: [5, 10, 25, 50],
+            info: false,
+            searching: false
+        });
+    });
+</script>
+{% endblock %}

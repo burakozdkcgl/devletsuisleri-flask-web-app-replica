@@ -17,15 +17,19 @@
         </button>
     </form>
     
-
+{% if not session.get("user_id") %}
     <form method="get" action="/login" style="flex: 1; display: contents;">
-    {% if not session.get("user_id") %}
-    <button class="indexBtn2" type="submit">
-        <i class="fas fa-sign-in-alt"></i> Giriş
-    </button>
-    {% endif %}
+        <button class="indexBtn2" type="submit">
+            <i class="fas fa-sign-in-alt"></i> Giriş
+        </button>
     </form>
-
+{% else %}
+    <form method="get" action="/account" style="flex: 1; display: contents;">
+        <button class="indexBtn2" type="submit">
+            <i class="fas fa-user-circle"></i> Hesabım
+        </button>
+    </form>
+{% endif %}
 
 
     <form method="post" action="/cafeteria" style="flex: 1; display: contents;">

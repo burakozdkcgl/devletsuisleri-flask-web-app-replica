@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block title %}Admin Paneli{% endblock %}
+
+{% block content %}
+<style>
+    .admin-grid {
+        max-width: 800px;
+        margin: 60px auto;
+        display: flex;
+        justify-content: center;
+        gap: 30px;
+        flex-wrap: wrap;
+    }
+
+    .admin-card {
+        width: 180px;
+        height: 180px;
+        background-color: #e0e0e0;
+        border-radius: 12px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-decoration: none;
+        color: #222;
+        font-weight: 600;
+        font-size: 16px;
+        transition: all 0.2s ease;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    }
+
+    .admin-card:hover {
+        background-color: #ccc;
+        transform: translateY(-3px);
+    }
+
+    .admin-card i {
+        font-size: 32px;
+        margin-bottom: 14px;
+    }
+
+</style>
+
+<div class="admin-grid">
+    <a href="/admin/branches" class="admin-card">
+        <i class="fas fa-code-branch"></i>
+        Şube Ayarları
+    </a>
+    <a href="/admin/users" class="admin-card">
+        <i class="fas fa-users-cog"></i>
+        Kullanıcı Ayarları
+    </a>
+    <a href="/admin/products" class="admin-card">
+        <i class="fas fa-boxes"></i>
+        Ürün Ayarları
+    </a>
+</div>
+{% endblock %}

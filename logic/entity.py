@@ -55,7 +55,7 @@ class User(db.Model):
     branch_id = db.Column(db.Integer, db.ForeignKey("branches.id", ondelete="SET NULL"), nullable=True)
 
     # One-to-one ilişki: Kullanıcının şifresi (UserCredential)
-    credentials = db.relationship("UserCredential", backref="user", uselist=False)
+    credentials = db.relationship("UserCredential", backref="user", uselist=False, cascade="all, delete-orphan")
     # → user.credentials.password_hash ile erişilir
 
 
