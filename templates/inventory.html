@@ -1,0 +1,226 @@
+{% extends "base.html" %}
+{% block title %}Envanter{% endblock %}
+
+{% block content %}
+<style>
+.account-container {
+    display: flex;
+    flex: 1;
+    width: 100%;
+    gap: 30px;
+    font-family: Arial, sans-serif;
+}
+
+.account-sidebar {
+    width: 180px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.sidebar-button {
+    padding: 12px;
+    background-color: #555; /* daha koyu arka plan */
+    color: white;           /* okunabilirlik */
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    text-align: left;
+    font-size: 13px;
+    transition: background 0.2s ease;
+}
+
+
+.sidebar-button.active {
+    background-color: #444;
+    color: white;
+}
+
+.account-section {
+    display: none;
+    background-color: #f5f5f5;
+    padding: 24px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    width: 100%;
+    min-width: 540px;
+    max-width: 900px;
+}
+
+.account-section.active {
+    display: block;
+}
+
+.account-section h3 {
+    margin-top: 0;
+    font-size: 18px;
+    border-bottom: 1px solid #bbb;
+    padding-bottom: 6px;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    margin-top: 20px;
+}
+
+table th, table td {
+    border: 1px solid #ccc;
+    padding: 8px;
+    text-align: left;
+}
+
+table th {
+    background-color: #eee;
+}
+
+.form-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 15px;
+    align-items: center;
+}
+
+select, input[type="number"] {
+    padding: 8px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 13px;
+}
+
+button {
+    padding: 9px 14px;
+    background-color: #444;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 13px;
+}
+
+button:hover {
+    background-color: #222;
+}
+</style>
+
+<div class="account-container">
+    <div class="account-sidebar">
+        <button class="sidebar-button active" onclick="showTab('overview', this)">
+            <i class="fas fa-chart-bar"></i>  Envanter Özeti
+        </button>
+        <button class="sidebar-button" onclick="showTab('assignment', this)">
+            <i class="fas fa-exchange-alt"></i>  Zimmetler
+        </button>
+        <button class="sidebar-button" onclick="showTab('add', this)">
+            <i class="fas fa-plus-circle"></i>  Yeni Ürün Girişi
+        </button>
+    </div>
+
+    <div>
+        <!-- Sekme 1: Özet -->
+        <div id="overview" class="account-section active">
+            <h3>Envanter Özeti</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Ürün</th>
+                        <th>Toplam</th>
+                        <th>Zimmetli</th>
+                        <th>Stokta</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in summary %}
+                    <tr>
+                        <td>{{ row.product.name }}</td>
+                        <td>{{ row.total }}</td>
+                        <td>{{ row.assigned }}</td>
+                        <td>{{ row.unassigned }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Sekme 2: Zimmetleme -->
+        <div id="assignment" class="account-section">
+            <h3>Zimmet Yönetimi</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Ürün</th>
+                        <th>Kullanıcı</th>
+                        <th>Durum</th>
+                        <th>İşlem</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in inventory %}
+                    <tr>
+                        <td>{{ item.id }}</td>
+                        <td>{{ item.product.name }}</td>
+                        <td>
+                            {% if item.user %}
+                                {{ item.user.full_name }}
+                            {% else %}
+                                <em>Boşta</em>
+                            {% endif %}
+                        </td>
+                        <td>{{ "Zimmetli" if item.user else "Stokta" }}</td>
+                        <td>
+                            {% if item.user %}
+                            <form method="POST" action="{{ url_for('inventory.unassign_inventory', item_id=item.id) }}">
+                                <button type="submit">Zimmetten Kaldır</button>
+                            </form>
+                            {% else %}
+                            <form method="POST" action="{{ url_for('inventory.assign_inventory') }}">
+                                <select name="user_id" required>
+                                    <option value="">Seçin</option>
+                                    {% for user in users %}
+                                    <option value="{{ user.id }}">{{ user.full_name }}</option>
+                                    {% endfor %}
+                                </select>
+                                <input type="hidden" name="product_id" value="{{ item.product.id }}">
+                                <button type="submit">Zimmetle</button>
+                            </form>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Sekme 3: Yeni ürün girişi -->
+        <div id="add" class="account-section">
+            <h3>Yeni Ürün Stoğu Ekle</h3>
+            <form method="POST" action="{{ url_for('inventory.add_stock') }}" class="form-group">
+                <select name="product_id" required>
+                    <option value="">Ürün Seçin</option>
+                    {% for product in products %}
+                    <option value="{{ product.id }}">{{ product.name }}</option>
+                    {% endfor %}
+                </select>
+                <input type="number" name="quantity" min="1" placeholder="Adet" required>
+                <button type="submit">Stoğa Ekle</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+function showTab(tabId, el) {
+    document.querySelectorAll(".sidebar-button").forEach(btn => btn.classList.remove("active"));
+    el.classList.add("active");
+
+    document.querySelectorAll(".account-section").forEach(section => section.classList.remove("active"));
+    document.getElementById(tabId).classList.add("active");
+}
+</script>
+{% endblock %}

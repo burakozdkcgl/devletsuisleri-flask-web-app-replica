@@ -72,3 +72,21 @@ class UserCredential(db.Model):
 
     # Şifrenin hashlenmiş hali
     password_hash = db.Column(db.String(255), nullable=True)
+
+
+# Ürün tablosu
+class Product(db.Model):
+    __tablename__ = "products"
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), nullable=False, unique=True)
+
+    inventories = db.relationship("Inventory", backref="product", lazy=True)  
+
+#Envanter tablosu
+class Inventory(db.Model):
+    __tablename__ = "inventory"
+    id = db.Column(db.Integer, primary_key=True)
+    product_id = db.Column(db.Integer, db.ForeignKey("products.id", ondelete="CASCADE"), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey("users.id", ondelete="SET NULL"), nullable=True)
+
+    user = db.relationship("User", backref="inventory_items")

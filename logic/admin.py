@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash, session
-from logic.entity import Branch, User, Role
+from logic.entity import Branch, User, Role, Product
 from logic.db import db
 from logic.context import require_admin
 
@@ -150,3 +150,55 @@ def create_user():
     roles = Role.query.all()
     branches = Branch.query.order_by(Branch.name).all()
     return render_template("admin_new_user.html", roles=roles, branches=branches)
+
+
+
+@admin_bp.route("/products", methods=["GET", "POST"])
+@require_admin
+def product_settings():
+    if request.method == "POST":
+        name = request.form.get("name", "").strip()
+        if not name:
+            flash("Ürün adı boş olamaz.", "error")
+        elif Product.query.filter_by(name=name).first():
+            flash("Bu ürün zaten kayıtlı.", "error")
+        else:
+            db.session.add(Product(name=name))
+            db.session.commit()
+            flash("Ürün başarıyla eklendi.", "success")
+        return redirect(url_for("admin.product_settings"))
+
+    products = Product.query.order_by(Product.name).all()
+    return render_template("admin_products.html", products=products)
+
+@admin_bp.route("/products/update/<int:product_id>", methods=["POST"])
+@require_admin
+def update_product(product_id):
+    product = Product.query.get(product_id)
+    new_name = request.form.get("name", "").strip()
+
+    if not product:
+        flash("Ürün bulunamadı.", "error")
+    elif not new_name:
+        flash("Ürün adı boş olamaz.", "error")
+    elif Product.query.filter(Product.name == new_name, Product.id != product_id).first():
+        flash("Bu isimde başka bir ürün zaten var.", "error")
+    else:
+        product.name = new_name
+        db.session.commit()
+        flash("Ürün güncellendi.", "success")
+
+    return redirect(url_for("admin.product_settings"))
+
+@admin_bp.route("/products/delete/<int:product_id>", methods=["POST"])
+@require_admin
+def delete_product(product_id):
+    product = Product.query.get(product_id)
+    if not product:
+        flash("Ürün bulunamadı.", "error")
+    else:
+        db.session.delete(product)
+        db.session.commit()
+        flash("Ürün silindi.", "info")
+
+    return redirect(url_for("admin.product_settings"))
