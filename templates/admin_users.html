@@ -1,12 +1,14 @@
 {% extends "base.html" %}
 {% block title %}Kullanıcı Ayarları{% endblock %}
 
-{% block head %}
+{% block content %}
 <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
 <style>
-    .user-wrapper {
+    .user-table-container {
         width: 100%;
-        padding: 40px 90px;
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 40px 20px;
     }
 
     .user-header {
@@ -33,13 +35,22 @@
         padding: 12px;
     }
 
-    table select, table input {
+    table input, table select {
+        min-width: 120px;
         width: 100%;
         padding: 6px 10px;
         font-size: 14px;
         border: 1px solid #ccc;
         border-radius: 4px;
         box-sizing: border-box;
+    }
+
+    td:last-child {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        justify-content: center;
+        min-width: 180px;
     }
 
     .action-btn {
@@ -72,12 +83,10 @@
         border-radius: 6px;
     }
 </style>
-{% endblock %}
 
-{% block content %}
-<div class="user-wrapper">
+<div class="user-table-container">
     <div class="user-header">
-        <a href="{{ url_for('admin.admin_index') }}" class="btn-back"><i class="fas fa-arrow-left"></i> Geri Dön</a>
+        <a href="/admin" class="btn-back"><i class="fas fa-arrow-left"></i> Geri Dön</a>
         <h2 class="user-title">Kullanıcı Ayarları</h2>
     </div>
 
@@ -87,50 +96,57 @@
                 <th>Ad Soyad</th>
                 <th>Rütbe</th>
                 <th>Şube</th>
-                <th style="width: 180px;">İşlemler</th>
+                <th>Dahili</th>
+                <th>İşlemler</th>
             </tr>
         </thead>
         <tbody>
             {% for user in users %}
             <tr>
-                <form method="post" action="{{ url_for('admin.update_user', user_id=user.id) }}">
-                <td>{{ user.full_name }}</td>
                 <td>
-                    <select name="role_id">
-                        {% for role in roles %}
-                        <option value="{{ role.id }}" {% if user.role_id == role.id %}selected{% endif %}>{{ role.name }}</option>
-                        {% endfor %}
-                    </select>
+                    <form method="POST" action="{{ url_for('admin.update_user', user_id=user.id) }}">
+                        {{ user.full_name }}
                 </td>
                 <td>
-                    <select name="branch_id">
-                        <option value="">—</option>
-                        {% for branch in branches %}
-                        <option value="{{ branch.id }}" {% if user.branch_id == branch.id %}selected{% endif %}>{{ branch.name }}</option>
-                        {% endfor %}
-                    </select>
+                        <select name="role_id">
+                            {% for role in roles %}
+                                <option value="{{ role.id }}" {% if user.role_id == role.id %}selected{% endif %}>{{ role.name }}</option>
+                            {% endfor %}
+                        </select>
                 </td>
                 <td>
-                    <button class="action-btn btn-update" type="submit">
-                        <i class="fas fa-save"></i> Kaydet
-                    </button>
-                </form>
-                <form method="post" action="{{ url_for('admin.delete_user', user_id=user.id) }}"
-                      style="display:inline-block"
-                      onsubmit="return confirm('Bu kullanıcıyı silmek istediğinize emin misiniz?')">
-                    <button class="action-btn btn-delete" type="submit">
-                        <i class="fas fa-trash"></i> Sil
-                    </button>
-                </form>
+                        <select name="branch_id">
+    <option value="" {% if not user.branch_id %}selected{% endif %}>— Şubesiz —</option>
+    {% for branch in branches %}
+        <option value="{{ branch.id }}" {% if user.branch_id == branch.id %}selected{% endif %}>{{ branch.name }}</option>
+    {% endfor %}
+</select>
+
+                </td>
+                <td>
+    <input type="text" name="internal_phone" value="{{ user.internal_phone or '' }}">
+                </td>
+
+                <td>
+                        <button class="action-btn btn-update" type="submit">
+                            <i class="fas fa-save"></i> Kaydet
+                        </button>
+                    </form>
+
+                    <form method="post" action="{{ url_for('admin.delete_user', user_id=user.id) }}"
+                          style="display:inline-block"
+                          onsubmit="return confirm('Bu kullanıcıyı silmek istediğinize emin misiniz?')">
+                        <button class="action-btn btn-delete" type="submit">
+                            <i class="fas fa-trash"></i> Sil
+                        </button>
+                    </form>
                 </td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
 </div>
-{% endblock %}
 
-{% block scripts %}
 <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
 <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
 <script>
@@ -142,7 +158,8 @@
             pageLength: 5,
             lengthMenu: [5, 10, 25, 50],
             info: false,
-            searching: false
+            searching: false,
+            autoWidth: false
         });
     });
 </script>

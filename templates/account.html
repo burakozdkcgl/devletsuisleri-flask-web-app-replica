@@ -1,0 +1,175 @@
+{% extends "base.html" %}
+{% block title %}Hesabım{% endblock %}
+
+{% block content %}
+<style>
+.account-container {
+    display: flex;
+    flex: 1;
+    width: 100%;
+    gap: 30px;
+    font-family: Arial, sans-serif;
+}
+
+.account-sidebar {
+    width: 180px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.sidebar-button {
+    padding: 12px;
+    background-color: #eee;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    text-align: center;
+    font-size: 13px;
+    transition: background 0.2s ease;
+}
+
+.sidebar-button.active {
+    background-color: #444;
+    color: white;
+}
+
+.account-section {
+    display: none;
+    background-color: #f5f5f5;
+    padding: 24px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    width: 100%;
+    min-width: 540px;
+    max-width: 600px;
+}
+
+.account-section.active {
+    display: block;
+}
+
+.account-section h3 {
+    margin-top: 0;
+    font-size: 18px;
+    border-bottom: 1px solid #bbb;
+    padding-bottom: 6px;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+label {
+    font-weight: bold;
+    display: block;
+    margin-top: 14px;
+    margin-bottom: 4px;
+    font-size: 13px;
+}
+
+input {
+    width: 100%;
+    padding: 9px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 13px;
+}
+
+button {
+    margin-top: 20px;
+    padding: 9px 16px;
+    background-color: #444;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 13px;
+}
+
+button:hover {
+    background-color: #222;
+}
+
+.inline-buttons {
+    display: flex;
+    gap: 10px;
+}
+</style>
+
+<div class="account-container">
+    <div class="account-sidebar">
+        <button class="sidebar-button active" onclick="showTab('info', this)">Kişisel Bilgiler</button>
+        <button class="sidebar-button" onclick="showTab('password', this)">Şifre Değiştir</button>
+    </div>
+
+    <div>
+        <div id="info" class="account-section active">
+            <h3>Kişisel Bilgiler</h3>
+            <form method="POST" action="/account/update_info" id="infoForm">
+                <label>Ad Soyad</label>
+                <input type="text" name="full_name" value="{{ user.full_name }}" readonly>
+                <label>Kullanıcı Adı</label>
+                <input type="text" name="username" value="{{ user.username }}" readonly>
+                <label>E-posta</label>
+                <input type="email" name="email" value="{{ user.email or '' }}" readonly>
+                <label>Şube</label>
+                <input type="text" value="{{ user.branch.name if user.branch else 'Belirtilmemiş' }}" readonly>
+                <label>Rütbe</label>
+                <input type="text" value="{{ user.role.name }}" readonly>
+                <div class="inline-buttons">
+                    <button type="button" id="editBtn" onclick="enableEdit()">Düzenle</button>
+                    <button type="submit" id="saveBtn" style="display:none;">Kaydet</button>
+                    <button type="button" onclick="disableEdit()" id="cancelBtn" style="display:none;">Geri</button>
+                </div>
+            </form>
+        </div>
+
+        <div id="password" class="account-section">
+            <h3>Şifre Değiştir</h3>
+            <form method="POST" action="/account/change_password">
+                <label>Mevcut Şifre</label>
+                <input type="password" name="current_password" required>
+                <label>Yeni Şifre</label>
+                <input type="password" name="new_password" required>
+                <label>Yeni Şifre (Tekrar)</label>
+                <input type="password" name="confirm_password" required>
+                <button type="submit">Şifreyi Güncelle</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+let originalValues = {};
+
+function showTab(tabId, el) {
+    document.querySelectorAll(".sidebar-button").forEach(btn => btn.classList.remove("active"));
+    el.classList.add("active");
+
+    document.querySelectorAll(".account-section").forEach(section => section.classList.remove("active"));
+    document.getElementById(tabId).classList.add("active");
+}
+
+function enableEdit() {
+    const inputs = document.querySelectorAll('#infoForm input[name="full_name"], input[name="username"], input[name="email"]');
+    inputs.forEach(input => {
+        originalValues[input.name] = input.value;
+        input.removeAttribute("readonly");
+    });
+    document.getElementById("editBtn").style.display = "none";
+    document.getElementById("saveBtn").style.display = "inline-block";
+    document.getElementById("cancelBtn").style.display = "inline-block";
+}
+
+function disableEdit() {
+    const inputs = document.querySelectorAll('#infoForm input[name="full_name"], input[name="username"], input[name="email"]');
+    inputs.forEach(input => {
+        input.setAttribute("readonly", true);
+        input.value = originalValues[input.name];
+    });
+    document.getElementById("editBtn").style.display = "inline-block";
+    document.getElementById("saveBtn").style.display = "none";
+    document.getElementById("cancelBtn").style.display = "none";
+}
+</script>
+{% endblock %}

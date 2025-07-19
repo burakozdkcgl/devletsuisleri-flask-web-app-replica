@@ -84,6 +84,7 @@ def update_user(user_id):
         user.role_id = int(request.form.get("role_id"))
         branch_id = request.form.get("branch_id")
         user.branch_id = int(branch_id) if branch_id else None
+        user.internal_phone = request.form.get("internal_phone", "").strip()  # EKLENDİ
         db.session.commit()
         flash("Kullanıcı güncellendi.", "success")
     except Exception:
