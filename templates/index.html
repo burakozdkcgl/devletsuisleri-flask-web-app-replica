@@ -1,49 +1,136 @@
-<!-- templates/index.html -->
 {% extends "base.html" %}
 
 {% block title %}Ana Sayfa{% endblock %}
 
+{% block head %}
+<style>
+/* === SLIDER === */
+.sliderContainer {
+    position: relative;
+    max-width: 800px;
+    height: 320px; /* daha karemsi */
+    overflow: hidden;
+    border-radius: 16px;
+    margin: 0 auto 24px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.sliderContainer img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: none;
+    transition: opacity 1s ease-in-out;
+}
+
+.sliderContainer img.active {
+    display: block;
+}
+
+.sliderCaption {
+    position: absolute;
+    bottom: 12px;
+    left: 20px;
+    background: rgba(0, 0, 0, 0.5);
+    padding: 8px 16px;
+    color: white;
+    font-size: 1rem;
+    border-radius: 8px;
+    max-width: 90%;
+}
+
+/* === ARROWS === */
+.sliderArrow {
+    position: absolute;
+    top: 48%;
+    transform: translateY(-50%);
+    background: rgba(0,0,0,0.3);
+    color: white;
+    font-size: 1.7rem;
+    padding: 8px 12px;
+    cursor: pointer;
+    z-index: 10;
+    border-radius: 50%;
+    user-select: none;
+    transition: background 0.3s;
+}
+
+.sliderArrow:hover {
+    background: rgba(0,0,0,0.6);
+}
+
+.sliderArrow.left {
+    left: 20px;
+}
+
+.sliderArrow.right {
+    right: 20px;
+}
+
+/* === BUTTONS === */
+.indexBtn1, .indexBtn2, .indexBtn3 {
+    height: 50px;
+    font-size: 1rem;
+    padding: 0 24px;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+</style>
+
+{% endblock %}
+
 {% block content %}
 <div class="mainContent">
-    
-    <div class="sliderPlaceholder"></div>
-    <p>Sample text or headline here describing content.</p>
 
-    
+    <div class="sliderContainer">
+        <!-- Arrows -->
+        <div class="sliderArrow left" onclick="prevSlide()">&#10094;</div>
+        <div class="sliderArrow right" onclick="nextSlide()">&#10095;</div>
 
-    <div class="buttonRow">
-    <form method="get" action="/directory" style="flex: 1; display: contents;">
-        <button class="indexBtn1" type="submit">
-            <i class="fas fa-address-book"></i> Rehber
-        </button>
-    </form>
-    
-{% if not session.get("user_id") %}
-    <form method="get" action="/login" style="flex: 1; display: contents;">
-        <button class="indexBtn2" type="submit">
-            <i class="fas fa-sign-in-alt"></i> Giriş
-        </button>
-    </form>
-{% else %}
-    <form method="get" action="/account" style="flex: 1; display: contents;">
-        <button class="indexBtn2" type="submit">
-            <i class="fas fa-user-circle"></i> Hesabım
-        </button>
-    </form>
-{% endif %}
+        <!-- Images -->
+        <img src="{{ url_for('static', filename='images/slider1.jpg') }}" alt="Slider 1" class="active" data-caption="Kurumsal Yapı ve Dijitalleşme">
+        <img src="{{ url_for('static', filename='images/slider2.jpg') }}" alt="Slider 2" data-caption="Zimmet Yönetimi ve Stok Takibi">
+        <img src="{{ url_for('static', filename='images/slider3.jpg') }}" alt="Slider 3" data-caption="Arıza Bildirim ve Takip Sistemi">
 
-
-    <form method="post" action="/cafeteria" style="flex: 1; display: contents;">
-        <button class="indexBtn3" type="submit">
-            <i class="fas fa-utensils"></i> Yemekhane
-        </button>
-    </form>
+        <!-- Caption -->
+        <div class="sliderCaption"></div>
     </div>
 
+    <p style="font-size: 1.1rem; margin-bottom: 20px;">
+        Dijital DSI, kurum içi süreçlerinizi daha verimli ve şeffaf bir şekilde yönetmenizi sağlar. Zimmet yönetimi, arıza bildirimleri ve stok takibi gibi işlemleri tek bir platformda toplayarak iş akışınızı hızlandırır.
+    </p>
 
+    <div class="buttonRow">
+        <form method="get" action="/directory" style="flex: 1; display: contents;">
+            <button class="indexBtn1" type="submit">
+                <i class="fas fa-address-book"></i> Rehber
+            </button>
+        </form>
 
+        {% if not session.get("user_id") %}
+        <form method="get" action="/login" style="flex: 1; display: contents;">
+            <button class="indexBtn2" type="submit">
+                <i class="fas fa-sign-in-alt"></i> Giriş
+            </button>
+        </form>
+        {% else %}
+        <form method="get" action="/account" style="flex: 1; display: contents;">
+            <button class="indexBtn2" type="submit">
+                <i class="fas fa-user-circle"></i> Hesabım
+            </button>
+        </form>
+        {% endif %}
 
-
+        <form method="post" action="/cafeteria" style="flex: 1; display: contents;">
+            <button class="indexBtn3" type="submit">
+                <i class="fas fa-utensils"></i> Yemekhane
+            </button>
+        </form>
+    </div>
 </div>
 
 <div class="sideColumn">
@@ -51,21 +138,72 @@
         <img class="sidebarLogo" src="{{ url_for('static', filename='images/sideColumn_logo.png') }}" loading="lazy" alt="Logo">
     </div>
 
-    <div class="indexBox2">
-        <h4>Kısayollar</h4>
-        <button>Link A</button>
-        <button>Link B</button>
-        <button>Link C</button>
-        <button>Link D</button>
-    </div>
+<div class="indexBox2">
+    <h4 style="text-align: center;">Kısayollar</h4>
+    <button onclick="window.open('https://dsi.gov.tr', '_blank')">DSİ Resmi Sitesi</button>
+    <button onclick="window.open('https://github.com/burakozdkcgl/devletsuisleri-flask-web-app-replica', '_blank')"><i class="fab fa-github"></i> Github Link</button>
+    
+</div>
+
+
+
 
     <div class="indexBox3">
-        <h4>Info</h4>
-        <ul>
-            <li>Something happened</li>
-            <li>Another event</li>
-            <li>Update available</li>
-        </ul>
-    </div>
+    <h4 style="text-align: center;"></h4>
+    <p style="text-align: center; font-style: italic; margin: 0;">Türkiye, sanılanın aksine su zengini bir ülke değil. Yılda kişi başına düşen 1.519 m³’lük su miktarı ile ‘su sıkıntısı çeken’ bir ülke.
+Bu nedenle, <strong>her damla suyu bilinçli kullanmak</strong> ve israftan kaçınmak hayati önem taşıyor.</p>
+    <br>
 </div>
+
+
+
+</div>
+
+<!-- Slider Script -->
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const slides = document.querySelectorAll(".sliderContainer img");
+    const caption = document.querySelector(".sliderCaption");
+    let index = 0;
+    let intervalId;
+
+    function showSlide(i) {
+        slides.forEach(slide => slide.classList.remove("active"));
+        slides[i].classList.add("active");
+        caption.textContent = slides[i].dataset.caption;
+    }
+
+    function nextSlide() {
+        index = (index + 1) % slides.length;
+        showSlide(index);
+    }
+
+    function prevSlide() {
+        index = (index - 1 + slides.length) % slides.length;
+        showSlide(index);
+    }
+
+    function startAutoSlide() {
+        intervalId = setInterval(nextSlide, 4000);
+    }
+
+    function stopAutoSlide() {
+        clearInterval(intervalId);
+    }
+
+    // Başlangıçta göster
+    showSlide(index);
+    startAutoSlide();
+
+    // Mouse ile etkileşimde otomatik geçişi durdurup devam ettir
+    document.querySelector(".sliderContainer").addEventListener("mouseenter", stopAutoSlide);
+    document.querySelector(".sliderContainer").addEventListener("mouseleave", startAutoSlide);
+
+    // Global erişim için fonksiyonları pencereye ekle
+    window.nextSlide = nextSlide;
+    window.prevSlide = prevSlide;
+});
+</script>
+
+
 {% endblock %}
