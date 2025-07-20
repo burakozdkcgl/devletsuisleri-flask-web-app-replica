@@ -1,4 +1,5 @@
 from logic.db import db  # SQLAlchemy nesnesini alıyoruz
+from datetime import datetime
 
 # ────────────────────────────────
 # ROL TABLOSU (Admin, Personel vs.)
@@ -83,7 +84,7 @@ class Product(db.Model):
     inventories = db.relationship("Inventory", backref="product", lazy=True, cascade="all, delete-orphan", passive_deletes=True)
 
 
-#Envanter tablosu
+# Envanter tablosu
 class Inventory(db.Model):
     __tablename__ = "inventory"
     id = db.Column(db.Integer, primary_key=True)
@@ -91,3 +92,18 @@ class Inventory(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey("users.id", ondelete="SET NULL"), nullable=True)
 
     user = db.relationship("User", backref="inventory_items")
+
+# Arıza tablosu
+class Issue(db.Model):
+    __tablename__ = "issues"
+    id = db.Column(db.Integer, primary_key=True)
+    creator_id = db.Column(db.Integer, db.ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
+    content = db.Column(db.Text, nullable=False)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+
+    approver_id = db.Column(db.Integer, db.ForeignKey("users.id", ondelete="SET NULL"), nullable=True)
+    approver_content = db.Column(db.Text, nullable=True)
+    approved_at = db.Column(db.DateTime, nullable=True)
+
+    creator = db.relationship("User", foreign_keys=[creator_id], backref="created_issues")
+    approver = db.relationship("User", foreign_keys=[approver_id], backref="approved_issues")

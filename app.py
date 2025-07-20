@@ -30,11 +30,13 @@ from logic.auth import auth_bp
 from logic.admin import admin_bp
 from logic.account import account_bp
 from logic.inventory import inventory_bp
+from logic.issue import issue_bp
 app.register_blueprint(main_bp)
 app.register_blueprint(auth_bp)
 app.register_blueprint(admin_bp)
 app.register_blueprint(account_bp)
 app.register_blueprint(inventory_bp)
+app.register_blueprint(issue_bp)
 
 if __name__ == "__main__":
     with app.app_context():

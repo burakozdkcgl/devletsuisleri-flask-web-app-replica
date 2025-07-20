@@ -1,0 +1,153 @@
+{% extends "base.html" %}
+{% block title %}Arıza Detayı{% endblock %}
+
+{% block content %}
+<style>
+.detail-container {
+    max-width: 860px;
+    min-width: 860px;
+    margin: 0 auto;
+    background-color: #f9f9f9;
+    padding: 40px;
+    border-radius: 14px;
+    box-shadow: 0 4px 18px rgba(0,0,0,0.08);
+    font-family: Arial, sans-serif;
+}
+
+.detail-container h2 {
+    margin-top: 0;
+    font-size: 24px;
+    color: #333;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.back-button {
+    background-color: #888;
+    color: white;
+    padding: 8px 14px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.back-button:hover {
+    background-color: #555;
+}
+
+.detail-block {
+    margin-bottom: 22px;
+}
+
+.detail-label {
+    font-weight: bold;
+    margin-bottom: 6px;
+    display: block;
+    color: #555;
+}
+
+.detail-content {
+    padding: 12px 16px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    white-space: pre-wrap;
+    color: #222;
+    max-height: 180px;
+    overflow-y: auto;
+    line-height: 1.5;
+    direction: ltr;
+    text-align: left;
+}
+
+.detail-content::-webkit-scrollbar {
+    width: 8px;
+}
+.detail-content::-webkit-scrollbar-thumb {
+    background-color: #ccc;
+    border-radius: 4px;
+}
+
+textarea {
+    width: 100%;
+    min-height: 140px;
+    padding: 12px;
+    font-size: 14px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    resize: vertical;
+    margin-bottom: 15px;
+}
+
+button {
+    background-color: #444;
+    color: white;
+    padding: 10px 18px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+button:hover {
+    background-color: #222;
+}
+</style>
+
+<div class="detail-container">
+    <h2>
+        Arıza #{{ issue.id }}
+        <a href="{{ url_for('issue.issues') }}" class="back-button">← Geri Dön</a>
+    </h2>
+
+    <div class="detail-block">
+        <span class="detail-label">Oluşturan:</span>
+        <div class="detail-content">{{ issue.creator.full_name }}</div>
+    </div>
+
+    <div class="detail-block">
+        <span class="detail-label">Oluşturma Tarihi:</span>
+        <div class="detail-content">{{ issue.created_at.strftime('%d.%m.%Y %H:%M') }}</div>
+    </div>
+
+    <div class="detail-block">
+        <span class="detail-label">Arıza İçeriği:</span>
+        <div class="detail-content">{{ issue.content }}</div>
+    </div>
+
+    {% if issue.approved_at %}
+        <div class="detail-block">
+            <span class="detail-label">Onaylayan:</span>
+            <div class="detail-content">{{ issue.approver.full_name }}</div>
+        </div>
+
+        <div class="detail-block">
+            <span class="detail-label">Onay Tarihi:</span>
+            <div class="detail-content">{{ issue.approved_at.strftime('%d.%m.%Y %H:%M') }}</div>
+        </div>
+
+        <div class="detail-block">
+            <span class="detail-label">Onaylayan Notu:</span>
+            <div class="detail-content">{{ issue.approver_content }}</div>
+        </div>
+    {% elif user.role.name in ["Admin", "Şube Müdürü"] %}
+        <form method="POST" action="{{ url_for('issue.approve_issue', issue_id=issue.id) }}">
+            <div class="detail-block">
+                <span class="detail-label">Tamamlamak için açıklama girin:</span>
+                <textarea name="approver_content" required></textarea>
+            </div>
+            <button type="submit">Arızayı Tamamla</button>
+        </form>
+    {% else %}
+        <div class="detail-block">
+            <span class="detail-label">Durum:</span>
+            <div class="detail-content"><em>Onay bekliyor...</em></div>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
